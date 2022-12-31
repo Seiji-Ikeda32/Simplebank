@@ -20,6 +20,7 @@ const (
 func TestMain(m *testing.M) {
 	var err error
 	testDB, err = sql.Open(dbDriver, dbSource)
+	defer testDB.Close()
 	if err != nil {
 		log.Fatal("failed to connect to database:", err)
 	}
