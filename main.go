@@ -8,16 +8,16 @@ import (
 
 	"github.com/Seiji-Ikeda32/simplebank/api"
 	db "github.com/Seiji-Ikeda32/simplebank/db/sqlc"
-)
-
-const (
-	dbDriver     = "postgres"
-	dbSource     = "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable"
-	serverAdress = "0.0.0.0:8080"
+	"github.com/Seiji-Ikeda32/simplebank/util"
 )
 
 func main() {
-	conn, err := sql.Open(dbDriver, dbSource)
+	config, err := util.LoadConfig(".")
+	if err != nil {
+		log.Fatal("connot load config:", err)
+	}
+
+	conn, err := sql.Open(config.DBDriver, config.DBSource)
 	defer conn.Close()
 	if err != nil {
 		log.Fatal("failed to connect to database:", err)
@@ -26,7 +26,7 @@ func main() {
 	store := db.NewStore(conn)
 	server := api.NewServer(store)
 
-	err = server.Start(serverAdress)
+	err = server.Start(config.ServerAddress)
 	println("server is Running")
 	if err != nil {
 		log.Fatalln("cannot start server:", err)
