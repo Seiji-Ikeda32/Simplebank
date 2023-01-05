@@ -1,5 +1,5 @@
 CREATE TABLE "users" (
-  "usename" varchar PRIMARY KEY,
+  "username" varchar PRIMARY KEY,
   "hashed_password" varchar NOT NULL,
   "full_name" varchar NOT NULL,
   "email" varchar UNIQUE NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE "users" (
   "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
-ALTER TABLE "accounts" ADD FOREIGN KEY ("owner") REFERENCES "users" ("usename");
+ALTER TABLE "accounts" ADD FOREIGN KEY ("owner") REFERENCES "users" ("username");
 
 -- CREATE UNIQUE INDEX ON "accounts" ("owner", "currency");
 ALTER TABLE "accounts" ADD CONSTRAINT "owner_currency_key" UNIQUE ("owner", "currency");
